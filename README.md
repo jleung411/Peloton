@@ -3,6 +3,7 @@
 Running web server
 ==================
 > $ pip install Flask
+> $ pip install pyopenssl ndg-httpsclient pyasn1
 > $ python stream.py
 >  * Running on http://localhost:5000/
 
