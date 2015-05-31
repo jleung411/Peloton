@@ -3,7 +3,6 @@ import json
 import sys
 import re
 import traceback
-import bisect
 import logging
 
 from flask import Flask, request, jsonify
