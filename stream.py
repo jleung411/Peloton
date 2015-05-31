@@ -43,8 +43,6 @@ class Stream:
 class MergedStream:
 
     def __init__(self, stream1, stream2):
-        self.merged_stream = []
-
         self.stream1 = stream1
         self.stream2 = stream2
 
@@ -53,17 +51,12 @@ class MergedStream:
 
         if self.stream1_current_element["current"] < self.stream2_current_element["current"]:
             self.last_element = self.stream1_current_element["last"]
-            self.merged_stream.append(self.stream1_current_element["current"])
-            self.merged_stream.append(self.stream2_current_element["current"])
         else:
             self.last_element = self.stream2_current_element["last"]
-            self.merged_stream.append(self.stream2_current_element["current"])
-            self.merged_stream.append(self.stream1_current_element["current"])
 
         log.debug("MergedStream::__init__()")
         log.debug("stream1: {0}, stream2: {1}".format(stream1.stream_name, stream2.stream_name))
         log.debug("stream1_current_element: {0}, stream2_current_element: {1}".format(self.stream1_current_element["current"], self.stream2_current_element["current"]))
-        log.debug("merged_stream: {0}".format(self.merged_stream))
 
 
     def next_element(self):
@@ -75,21 +68,18 @@ class MergedStream:
 
         try:
             if self.stream1_current_element["current"] < self.stream2_current_element["current"]:
-                element = self.stream1_current_element = self.stream1.next_element()
+                next_element["current"] = self.stream1_current_element["current"]
+                self.stream1_current_element = self.stream1.next_element()
+                log.debug("element: {0}".format(self.stream1_current_element))
             else:
-                element = self.stream2_current_element = self.stream2.next_element()
+                next_element["current"] = self.stream2_current_element["current"]
+                self.stream2_current_element = self.stream2.next_element()
+                log.debug("element: {0}".format(self.stream2_current_element))
 
-            log.debug("element: {0}".format(element))
- 
-            bisect.insort(self.merged_stream, element["current"])
             next_element["last"] = self.last_element
-            next_element["current"] = self.merged_stream.pop(0)
-
             self.last_element = next_element["current"]
         except:
             traceback.print_exc()
-
-        log.debug("merged_stream: {0}".format(self.merged_stream))
 
         return next_element
 

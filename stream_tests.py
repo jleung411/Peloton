@@ -8,7 +8,7 @@ import logging
 from stream import MergedStream, MergedStreamManager, Stream, valid_stream_name
 from mock import Mock
 
-sh  = logging.StreamHandler(sys.stdout)
+sh = logging.StreamHandler(sys.stdout)
 sh.setLevel(logging.DEBUG)
 sh.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
 
@@ -16,12 +16,16 @@ log = logging.getLogger("jleung.peloton.stream_tests")
 log.setLevel(logging.DEBUG)
 log.addHandler(sh)
 
+
 class FlaskrTestCase(unittest.TestCase):
 
     def setUp(self):
         stream.app.config['TESTING'] = True
         self.app = stream.app.test_client()
+
         stream.merged_stream_manager = MergedStreamManager()
+
+#        TODO: mock server endpoint
 #        self.test_stream1 = [2, 6, 11, 14, 15, 21]
 #        self.test_stream2 = [10, 11, 22, 50, 88, 92]
 
@@ -29,10 +33,12 @@ class FlaskrTestCase(unittest.TestCase):
     def tearDown(self):
         stream.merged_stream_manager = None
 
+
     def test_stream(self):
-        stream1 = Stream("stream{0}".format(random.randint(1, 10000)))
-        assert stream1.stream_name == "stream1"
-        assert stream1.stream_uri == "https://api.pelotoncycle.com/quiz/next/stream1"
+        stream_name = "stream{0}".format(random.randint(1, 10000))
+        stream = Stream(stream_name)
+        assert stream.stream_name == stream_name
+        assert stream.stream_uri == "https://api.pelotoncycle.com/quiz/next/{0}".format(stream_name)
 
 
     def test_stream_name(self):
