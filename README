@@ -12,3 +12,8 @@ Running tests
 =============
 $ pip install mock
 $ python stream_test.py
+
+EC2
+===
+I've deployed a copy to EC2 as well. You can access it using the following URL:
+http://52.25.107.59:5000/merge?stream1=<stream_name_1>&stream2=<stream_name_2>
