@@ -104,6 +104,7 @@ def valid_stream_name(stream_name):
 
 
 @app.route("/quiz/merge/")
+@app.route("/quiz/merge")
 def merge():
     # return -1 if anything goes wrong
     response = {"last": -1, "current": -1} 
