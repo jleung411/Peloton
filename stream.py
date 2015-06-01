@@ -9,7 +9,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 
-sh  = logging.StreamHandler(sys.stdout)
+sh = logging.StreamHandler(sys.stdout)
 sh.setLevel(logging.DEBUG)
 sh.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
 
