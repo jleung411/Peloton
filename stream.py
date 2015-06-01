@@ -100,7 +100,7 @@ merged_stream_manager = MergedStreamManager()
 
 
 def valid_stream_name(stream_name):
-    return True if re.match("^[A-Za-z0-9_-]*$", stream_name) else False
+    return True if stream_name and re.match("^[A-Za-z0-9_-]*$", stream_name) else False
 
 
 @app.route("/quiz/merge/")
