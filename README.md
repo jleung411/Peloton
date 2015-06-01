@@ -10,5 +10,5 @@ Running web server
 
 Running tests
 =============
-> $ pip install -U mock
+> $ pip install mock
 > $ python stream_test.py
