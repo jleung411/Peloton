@@ -7,7 +7,6 @@ $ pip install pyopenssl ndg-httpsclient pyasn1
 $ python stream.py
  * Running on http://localhost:5000/
 
-
 Running tests
 =============
 $ pip install mock
@@ -16,4 +15,11 @@ $ python stream_test.py
 EC2
 ===
 I've deployed a copy to EC2 as well. You can access it using the following URL:
-http://52.25.107.59:5000/merge?stream1=<stream_name_1>&stream2=<stream_name_2>
+http://52.25.107.59:5000/quiz/merge?stream1=<stream_name_1>&stream2=<stream_name_2>
+
+Design Trade offs
+=================
+1) Used a thread-unsafe singleton to manage the merged stream just to keep implementation simple. Could put a lock in the get_instance() method to improve this issue.
+2) MergedStream's get_next() method should be one transaction too, so we don't corrupt the MemberStream member variable values in a multi-threaded environment.
+3) Again, to keep implementation simple, I assume we only handle one stream1/stream2 pair the entire life the application. Could create a new session for each stream1/stream2 pair as an improvement.
+4) Testing: Would have liked to made mocked the the server endpoint and used my own data set, so that the unit tests wouldn't require network access. Also, I would be able to validate the output of merged stream against the correct sequence.
